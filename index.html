@@ -48,6 +48,26 @@
             position: relative;
             z-index: 10;
         }
+        /* Navigation styles */
+        header {
+            background-color: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(4px);
+        }
+        #nav-menu {
+            transition: all 0.3s ease-in-out;
+        }
+        #mobile-menu {
+            transition: all 0.3s ease-in-out;
+            z-index: 40;
+        }
+        #mobile-menu ul li a {
+            display: block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+        }
+        #mobile-menu ul li a:hover {
+            background-color: rgba(239, 68, 68, 0.2);
+        }
         /* Slideshow and testimonial slider styles */
         .slideshow-container {
             position: relative;
@@ -72,6 +92,7 @@
             object-fit: cover;
             border-radius: 0.5rem;
             transition: transform 0.3s ease;
+            cursor: pointer;
             loading: lazy;
         }
         .slide.active img {
@@ -94,6 +115,44 @@
         }
         .prev { left: 0.5rem; }
         .next { right: 0.5rem; }
+        /* Full-screen image modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
+        }
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 0;
+            transform: none;
+        }
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            transition: background-color 0.3s ease;
+        }
+        .modal-close:hover {
+            background-color: rgba(239, 68, 68, 0.9);
+        }
         /* Testimonial slider styles */
         .testimonial-container {
             position: relative;
@@ -137,6 +196,43 @@
         }
         .t-prev { left: 0.5rem; }
         .t-next { right: 0.5rem; }
+        /* FAQ accordion styles */
+        .faq-item {
+            background-color: #1f2937;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+        .faq-question:hover {
+            background-color: #374151;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 1.5rem;
+            color: #d1d5db;
+        }
+        .faq-answer.active {
+            max-height: 200px; /* Adjust based on content */
+            padding: 1rem 1.5rem;
+        }
+        .faq-toggle {
+            transition: transform 0.3s ease;
+        }
+        .faq-toggle.active {
+            transform: rotate(180deg);
+        }
         /* Custom animations */
         @keyframes pulse {
             0% { transform: scale(1); }
@@ -174,20 +270,47 @@
             header {
                 background-attachment: scroll;
             }
+            .modal img {
+                max-width: 95%;
+                max-height: 80%;
+            }
+            .faq-answer.active {
+                max-height: 300px; /* More space for mobile */
+            }
+        }
+        /* Hero section background */
+        .hero-section {
+            background-image: url('https://images.unsplash.com/photo-1517502884422-41eaead166d4?q=80&w=1920&auto=format&fit=crop');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(185, 28, 28, 0.7));
+        }
+        .hero-section .container {
+            position: relative;
+            z-index: 10;
         }
     </style>
 </head>
 <body class="bg-gray-900 font-sans leading-relaxed text-gray-100 antialiased">
     <!-- Header -->
-    <header class="sticky top-0 z-30 shadow-lg text-white">
+    <header class="sticky top-0 z-50 shadow-lg text-white">
         <nav class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center" aria-label="Main navigation">
             <div class="flex items-center">
-                <!-- Replace with your actual logo URL -->
-                <img src="https://scontent.fmnl14-1.fna.fbcdn.net/v/t39.30808-6/474589993_122231600384027180_5437514226873773152_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=omLpsCYzOaMQ7kNvwHBK_aY&_nc_oc=AdmGgM2cLT-f-J-i8UMAJ26PWDiQMR5--yIezd1_pINIXZhfvmXtTNXHOrck4BxydFg&_nc_zt=23&_nc_ht=scontent.fmnl14-1.fna&_nc_gid=GEn8p3si_zQaZozIBQqUDA&oh=00_AfHZX1U79gXPG0yI-69XjRxDQbYRRZh5zm1VobCKTDbTzw&oe=680838B5" alt="Bajet's Tint Services Logo" class="h-10 sm:h-12 mr-3 animate-slide-up" loading="lazy">
+                <img src="https://scontent.fmnl14-1.fna.fbcdn.net/v/t39.30808-6/474589993_122231600384027180_5437514226873773152_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=bmtxmSRZXF0Q7kNvwGM4ijl&_nc_oc=AdkbMf05OH7OHUBM1TJSt2EiqWpHE_d3aU8aRZVdMMZ5M7Ci3ncFu7d7V_5P-Gw-VLo&_nc_zt=23&_nc_ht=scontent.fmnl14-1.fna&_nc_gid=asrwHcV9pf5OCsGDxHmaIw&oh=00_AfEwkN-_vKGPKOlIP7BjARhLQbLKaHdb41-zdQRkJxX9hQ&oe=6814BEF5" alt="Bajet's Tint Services Logo" class="h-10 sm:h-12 mr-3 animate-slide-up" loading="lazy">
                 <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight animate-slide-up">Bajet's Tint Services</h1>
             </div>
             <div class="md:hidden">
-                <button id="menu-toggle" class="text-white focus:outline-none" aria-label="Toggle mobile menu" aria-expanded="false">
+                <button id="menu-toggle" class="text-white focus:outline-none focus:ring-2 focus:ring-amber-400 rounded" aria-label="Toggle mobile menu" aria-expanded="false">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
@@ -200,6 +323,7 @@
                 <li><a href="#gallery" class="hover:text-amber-400 transition-colors duration-200 animate-slide-up" role="menuitem">Our Work</a></li>
                 <li><a href="#process" class="hover:text-amber-400 transition-colors duration-200 animate-slide-up" role="menuitem">Our Process</a></li>
                 <li><a href="#about" class="hover:text-amber-400 transition-colors duration-200 animate-slide-up" role="menuitem">About</a></li>
+                <li><a href="#faq" class="hover:text-amber-400 transition-colors duration-200 animate-slide-up" role="menuitem">FAQ</a></li>
                 <li><a href="#contact" class="hover:text-amber-400 transition-colors duration-200 animate-slide-up" role="menuitem">Contact</a></li>
             </ul>
         </nav>
@@ -214,14 +338,15 @@
             <li><a href="#gallery" class="hover:text-amber-400 transition-colors duration-200" role="menuitem">Our Work</a></li>
             <li><a href="#process" class="hover:text-amber-400 transition-colors duration-200" role="menuitem">Our Process</a></li>
             <li><a href="#about" class="hover:text-amber-400 transition-colors duration-200" role="menuitem">About</a></li>
+            <li><a href="#faq" class="hover:text-amber-400 transition-colors duration-200" role="menuitem">FAQ</a></li>
             <li><a href="#contact" class="hover:text-amber-400 transition-colors duration-200" role="menuitem">Contact</a></li>
         </ul>
     </div>
 
     <!-- Hero Section -->
-    <section id="home" class="bg-gradient-to-b from-gray-900 to-red-900 text-white py-20 sm:py-28 relative">
+    <section id="home" class="hero-section text-white py-20 sm:py-28 relative">
         <div class="container mx-auto px-4 sm:px-6 text-center">
-            <div class="absolute top-4 right-4 bg-amber-400 text-gray-900 text-xs sm:text-sm font-bold px-3 py-1 rounded-full animate-pulse-cta">Free Home Service!</div>
+            <!-- <div class="absolute top-4 right-4 bg-amber-400 text-gray-900 text-xs sm:text-sm font-bold px-3 py-1 rounded-full animate-pulse-cta">Free Home Service!</div> -->
             <h2 class="text-4xl sm:text-6xl font-extrabold mb-4 tracking-tight animate-slide-up">Top-Tier Tints with Solrex, Anda, or 3M – Delivered to You!</h2>
             <p class="text-lg sm:text-xl mb-8 max-w-2xl mx-auto animate-slide-up delay-100">Get premium window tints, including frosted options for offices, for your car, home, or business with our expert home service.</p>
             <a href="#contact" class="inline-block bg-amber-400 text-gray-900 px-8 sm:px-10 py-4 rounded-full font-bold text-lg hover:bg-amber-500 transition-colors duration-200 animate-slide-up delay-200">Claim Your Free Quote Now!</a>
@@ -394,21 +519,16 @@
             <h2 class="text-2xl sm:text-3xl font-bold text-center mb-12 text-amber-400 animate-slide-up">Our Work</h2>
             <p class="text-base sm:text-lg text-center text-gray-200 mb-8 max-w-2xl mx-auto animate-slide-up delay-100">See our slick Solrex, Anda, and 3M tint jobs, including frosted tints, in action!</p>
             <div class="slideshow-container bg-gray-800 rounded-xl shadow-2xl p-4 sm:p-6" aria-label="Work gallery">
-                <!-- Replace these placeholder image URLs with your actual image URLs -->
                 <div class="slide">
-                    <img src="https://scontent.fmnl14-1.fna.fbcdn.net/v/t39.30808-6/486943297_122244254264027180_2783380203541489573_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=aYZBMjeCjkEQ7kNvwGfrg2z&_nc_oc=Adm8ElZQQx1WxBJ-taertYEkfASVojBQUsPPVHrwYL7VuKM9wP32jSWnc12oyHuqA90&_nc_zt=23&_nc_ht=scontent.fmnl14-1.fna&_nc_gid=FBlkZp4Z7gBcJUEDuQDAtQ&oh=00_AfFZaNdLQ7LUzWyOpJWOeMwrtX4fplbeC6UkT_sSA2Ey2A&oe=68084F60" alt="Sedan with Solrex S7 Nano-Ceramic tint applied in 2025" loading="lazy">
+                    <img src="https://scontent.fmnl14-1.fna.fbcdn.net/v/t39.30808-6/486611725_122244255506027180_248343564900234164_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=xVlBoMTqQ5QQ7kNvwHJUD3r&_nc_oc=AdnK99PJfQo-3js4-Hpb0jaQlsZQeJmSiYdfucZSjvBSnoj9mSnq8QEDqPUXg1_-6Kc&_nc_zt=23&_nc_ht=scontent.fmnl14-1.fna&_nc_gid=LkxgdsdqY9KGujp2mGUAzg&oh=00_AfHBaf9avphGKMzJJ9iMKxbjXAuWxo9EYmT_E6Tg5taEwg&oe=6814D6BA" alt="Sedan with Solrex S7 Nano-Ceramic tint applied in 2025" loading="lazy">
                     <p class="text-center text-sm sm:text-base text-gray-300 mt-4">Sedan with Solrex S7 Nano-Ceramic Tint</p>
                 </div>
                 <div class="slide">
-                    <img src="https://scontent.fmnl14-1.fna.fbcdn.net/v/t39.30808-6/487091842_122244253418027180_3357137621951952100_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_ohc=G02OJAu17jgQ7kNvwG99oqA&_nc_oc=AdnnmZyygRe3hAaLqHyHxJLgprSTdRBdgCLpg-qUH2SKJOZKEjdFSgPzAPbmfjvWrS0&_nc_zt=23&_nc_ht=scontent.fmnl14-1.fna&_nc_gid=2m-DWp_KFfujC83-7esK4g&oh=00_AfFpzbZzCYenWtwbVLmxsq3kppikX9Plnv9t_RkhxDNT6g&oe=6808544C" alt="Residential windows with Anda Pro Series tint for UV protection" loading="lazy">
-                    <p class="text-center text-sm sm:text-base text-gray-300 mt-4">Residential Windows with Anda Pro Series Tint</p>
-                </div>
-                <div class="slide">
-                    <img src="https://scontent.fmnl14-1.fna.fbcdn.net/v/t39.30808-6/486611725_122244255506027180_248343564900234164_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=caPZboocbigQ7kNvwFuqfJD&_nc_oc=Adn7as2XmHN_mUOo_irjWWmJcK5euqPR_tDcyYT_OdehRu3oVpWMOaeIhUH-sFPDino&_nc_zt=23&_nc_ht=scontent.fmnl14-1.fna&_nc_gid=jC5eVCEvqE51-yiISZTy6Q&oh=00_AfHGqMr6DlsQWiCk6tr1KvCrItUKDbP-ulLZ4mvSn8oXig&oe=6808507A" alt="SUV with 3M Crystalline tint for style" loading="lazy">
+                    <img src="https://scontent.fmnl14-1.fna.fbcdn.net/v/t39.30808-6/471548405_122225052992027180_6831519315572488425_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_ohc=k1SncnSbAS4Q7kNvwGaQFw8&_nc_oc=AdltdhueQ-j3WRSoTZij6fawVwBPGv66XwtRXgItf52BZb6TW7tdEn8KRNTNqhb8Vrk&_nc_zt=23&_nc_ht=scontent.fmnl14-1.fna&_nc_gid=anGU-3EVoFiam3lX8CfdxA&oh=00_AfGPGFRZA8EPYW5yKynANknSVuBRCVH-4kFidLSl29ErWw&oe=6814C0DB" alt="SUV with 3M Crystalline tint for style" loading="lazy">
                     <p class="text-center text-sm sm:text-base text-gray-300 mt-4">SUV with 3M Crystalline Tint</p>
                 </div>
                 <div class="slide">
-                    <img src="https://scontent.fmnl14-1.fna.fbcdn.net/v/t39.30808-6/484324208_122241966452027180_6211060550704358841_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=127cfc&_nc_ohc=3Fe7RAUopgMQ7kNvwE4G3NN&_nc_oc=AdnBVmRsXwq5GI5CAmzbPlmAI58OTJ3h_ivvsug9FdnWqy89Yvdb6Fw_7cT47-wN5LU&_nc_zt=23&_nc_ht=scontent.fmnl14-1.fna&_nc_gid=EPMT6bgmVy_jjysvKL0AYA&oh=00_AfFqDM4_JmIUzA9IWarzHkunGorQ_buz2NH2Y_YVIr7Sfw&oe=68083BE6" alt="Office with 3M Frosted Film for privacy" loading="lazy">
+                    <img src="https://images.squarespace-cdn.com/content/v1/5f3f1d0babe51d3b84ac81c7/1599118434321-RWH8QBZSV2PX94D3VTSP/28-frost-film-tint-design-10.jpg" alt="Office with 3M Frosted Film for privacy" loading="lazy">
                     <p class="text-center text-sm sm:text-base text-gray-300 mt-4">Office with 3M Frosted Film</p>
                 </div>
                 <a class="prev" onclick="changeSlide(-1)" role="button" aria-label="Previous slide">❮</a>
@@ -417,6 +537,12 @@
         </div>
     </section>
 
+    <!-- Full-screen Image Modal -->
+    <div id="imageModal" class="modal" role="dialog" aria-label="Full-screen image">
+        <span class="modal-close" onclick="closeModal()" aria-label="Close modal">×</span>
+        <img id="modalImage" src="" alt="Full-screen image">
+    </div>
+
     <!-- Tinting Process Section -->
     <section id="process" class="bg-gray-900 py-16 sm:py-20">
         <div class="container mx-auto px-4 sm:px-6">
@@ -424,7 +550,6 @@
             <p class="text-base sm:text-lg text-center text-gray-200 mb-8 max-w-2xl mx-auto animate-slide-up delay-100">Watch our step-by-step process to see how we apply premium Solrex, Anda, or 3M tints, including frosted films, with precision and care.</p>
             <div class="max-w-4xl mx-auto bg-gray-800 rounded-xl shadow-2xl p-4 sm:p-6 animate-slide-up delay-200">
                 <div class="relative" style="padding-top: 56.25%;">
-                    <!-- Ensure the Facebook video is publicly accessible; replace with your actual video URL if it’s private -->
                     <iframe class="absolute top-0 left-0 w-full h-full rounded-lg" src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1525397658857463&show_text=false&width=734&appId=&height=400" title="Bajet's Tint Services Tinting Process Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
                 </div>
                 <p class="text-center text-sm sm:text-base text-gray-300 mt-4">Our expert team ensures a flawless tint application, delivered to your doorstep.</p>
@@ -438,19 +563,16 @@
             <h2 class="text-2xl sm:text-3xl font-bold text-center mb-12 text-amber-400 animate-slide-up">What Our Customers Say</h2>
             <div class="testimonial-container bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8 max-w-3xl mx-auto" aria-label="Customer testimonials">
                 <div class="testimonial-slide">
-                    <!-- Replace with actual client image -->
                     <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop" alt="Jake M., Car Enthusiast" class="testimonial-image" loading="lazy">
                     <p class="text-base sm:text-lg text-gray-200 text-center italic mb-4">"The Solrex tint on my car looks awesome and keeps it cool. They came to my house – so easy!"</p>
                     <p class="text-sm sm:text-base text-amber-400 text-center font-semibold">Jake M., Car Enthusiast</p>
                 </div>
                 <div class="testimonial-slide">
-                    <!-- Replace with actual client image -->
                     <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" alt="Sarah L., Business Owner" class="testimonial-image" loading="lazy">
                     <p class="text-base sm:text-lg text-gray-200 text-center italic mb-4">"The 3M tint on my office windows is crystal clear and super effective. Home service was a game-changer!"</p>
                     <p class="text-sm sm:text-base text-amber-400 text-center font-semibold">Sarah L., Business Owner</p>
                 </div>
                 <div class="testimonial-slide">
-                    <!-- Replace with actual client image -->
                     <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=200&auto=format&fit=crop" alt="Mark T., Office Manager" class="testimonial-image" loading="lazy">
                     <p class="text-base sm:text-lg text-gray-200 text-center italic mb-4">"The 3M frosted tint in our office adds privacy and looks sleek. Installed right at our workplace!"</p>
                     <p class="text-sm sm:text-base text-amber-400 text-center font-semibold">Mark T., Office Manager</p>
@@ -467,7 +589,6 @@
             <h2 class="text-2xl sm:text-3xl font-bold text-center mb-12 text-amber-400 animate-slide-up">About Us</h2>
             <p class="text-base sm:text-lg text-center max-w-3xl mx-auto text-gray-300 mb-8 animate-slide-up delay-100">Bajet’s Tint Services brings you Solrex, Anda, and 3M tints, including frosted films for offices, for epic style and comfort, installed at your home or business by our pro team.</p>
             <div class="max-w-md mx-auto mb-8 animate-slide-up delay-150">
-                <!-- Replace with your actual image URL -->
                 <img src="https://scontent.fmnl14-1.fna.fbcdn.net/v/t39.30808-6/306666367_2042929209232734_5839607736395317463_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=2285d6&_nc_eui2=AeFQfJVWInF8G1TZ7kFA1D2cGQJKkzaB2d4ZAkqTNoHZ3mFobLSz1iUDoemcmmAQFWK-nwYavLSIqIO084tgKANY&_nc_ohc=-AF2FbkRStoQ7kNvwGz-tBt&_nc_oc=AdmnGq0zlxvDP09KKXcNkaXNR_7Rmt9jHTJT6ryhSNj6HCmEZoWj_zQFyopaaEr8NCw&_nc_zt=23&_nc_ht=scontent.fmnl14-1.fna&_nc_gid=VP2mH7mN5Jcec4amKMXaOg&oh=00_AfFQ6FDrscHlw3lMt0JJZDbFBWa5lKteWebwOE1YE3XQ5g&oe=680861A8" alt="Two professional tinters applying window tint to a red van at Bajet’s Tint Services" class="w-full h-auto rounded-xl shadow-lg" loading="lazy">
                 <p class="text-sm sm:text-base text-gray-300 text-center mt-4">Our expert tinters at work, bringing Solrex, Anda, and 3M to you!</p>
             </div>
@@ -479,6 +600,71 @@
                     <li class="flex items-center justify-center"><span class="text-amber-400 mr-2">★</span> Pro installers with serious skills</li>
                     <li class="flex items-center justify-center"><span class="text-amber-400 mr-2">★</span> Tints that last, guaranteed</li>
                 </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="bg-gray-900 py-16 sm:py-20">
+        <div class="container mx-auto px-4 sm:px-6">
+            <h2 class="text-2xl sm:text-3xl font-bold text-center mb-12 text-amber-400 animate-slide-up">Frequently Asked Questions</h2>
+            <p class="text-base sm:text-lg text-center text-gray-200 mb-8 max-w-2xl mx-auto animate-slide-up delay-100">Got questions about our tinting services? We’ve got answers!</p>
+            <div class="max-w-3xl mx-auto animate-slide-up delay-200">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)" role="button" aria-expanded="false" aria-controls="faq1">
+                        <span>What types of tints do you offer?</span>
+                        <svg class="faq-toggle w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="faq-answer" id="faq1">
+                        <p>We offer premium Solrex, Anda, and 3M tints, including frosted films for office privacy. Each brand has options for different light transmission (VLT), UV protection, and heat rejection levels to suit your needs.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)" role="button" aria-expanded="false" aria-controls="faq2">
+                        <span>How does your free home service work?</span>
+                        <svg class="faq-toggle w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="faq-answer" id="faq2">
+                        <p>Our expert team brings all necessary tools and materials to your location—home, office, or elsewhere—for a hassle-free tint installation. Just schedule a time, and we’ll handle the rest at no extra cost!</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)" role="button" aria-expanded="false" aria-controls="faq3">
+                        <span>Are your tints covered by a warranty?</span>
+                        <svg class="faq-toggle w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="faq-answer" id="faq3">
+                        <p>Yes, all our tints (Solrex, Anda, and 3M) come with manufacturer-backed warranties covering issues like peeling, bubbling, or fading. Contact us for specific warranty details based on your chosen tint.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)" role="button" aria-expanded="false" aria-controls="faq4">
+                        <span>How long does the tinting process take?</span>
+                        <svg class="faq-toggle w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="faq-answer" id="faq4">
+                        <p>Installation time varies by project size. A typical car takes 2–4 hours, while residential or commercial jobs may take 4–8 hours. We’ll provide an estimate during your free quote.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)" role="button" aria-expanded="false" aria-controls="faq5">
+                        <span>Can frosted tints be used for privacy in offices?</span>
+                        <svg class="faq-toggle w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="faq-answer" id="faq5">
+                        <p>Absolutely! Our 3M frosted films are perfect for adding privacy and a sleek look to office spaces while still allowing natural light. They’re customizable for patterns or logos too!</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -538,8 +724,7 @@
     <!-- Footer -->
     <footer class="bg-gray-800 py-8 sm:py-10">
         <div class="container mx-auto px-4 sm:px-6 text-center">
-            <!-- Replace with your actual logo URL -->
-            <img src="https://scontent.fmnl14-1.fna.fbcdn.net/v/t39.30808-6/474589993_122231600384027180_5437514226873773152_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=omLpsCYzOaMQ7kNvwHBK_aY&_nc_oc=AdmGgM2cLT-f-J-i8UMAJ26PWDiQMR5--yIezd1_pINIXZhfvmXtTNXHOrck4BxydFg&_nc_zt=23&_nc_ht=scontent.fmnl14-1.fna&_nc_gid=GEn8p3si_zQaZozIBQqUDA&oh=00_AfHZX1U79gXPG0yI-69XjRxDQbYRRZh5zm1VobCKTDbTzw&oe=680838B5" alt="Bajet's Tint Services Logo" class="h-10 sm:h-12 mx-auto mb-4 animate-slide-up" loading="lazy">
+            <img src="https://scontent.fmnl14-1.fna.fbcdn.net/v/t39.30808-6/474589993_122231600384027180_5437514226873773152_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=bmtxmSRZXF0Q7kNvwGM4ijl&_nc_oc=AdkbMf05OH7OHUBM1TJSt2EiqWpHE_d3aU8aRZVdMMZ5M7Ci3ncFu7d7V_5P-Gw-VLo&_nc_zt=23&_nc_ht=scontent.fmnl14-1.fna&_nc_gid=asrwHcV9pf5OCsGDxHmaIw&oh=00_AfEwkN-_vKGPKOlIP7BjARhLQbLKaHdb41-zdQRkJxX9hQ&oe=6814BEF5" alt="Bajet's Tint Services Logo" class="h-10 sm:h-12 mx-auto mb-4 animate-slide-up" loading="lazy">
             <p class="text-xs sm:text-sm text-gray-400 mb-4">© 2025 Bajet's Tint Services. All rights reserved.</p>
             <div class="flex justify-center space-x-4 text-xs sm:text-sm">
                 <a href="#privacy" class="text-gray-300 hover:text-amber-400 transition-colors duration-200">Privacy Policy</a>
@@ -557,6 +742,19 @@
             const isHidden = mobileMenu.classList.toggle('hidden');
             menuToggle.setAttribute('aria-expanded', !isHidden);
             mobileMenu.setAttribute('aria-hidden', isHidden);
+            menuToggle.querySelector('svg').innerHTML = isHidden ?
+                `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>` :
+                `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>`;
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                mobileMenu.setAttribute('aria-hidden', 'true');
+                menuToggle.querySelector('svg').innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>`;
+            });
         });
 
         // Main Slideshow Logic
@@ -589,6 +787,41 @@
             autoPlayInterval = setInterval(autoPlay, 5000);
         }
 
+        // Full-screen Image Modal Logic
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const slidesImages = document.querySelectorAll('.slide img');
+
+        slidesImages.forEach(img => {
+            img.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                modalImage.src = img.src;
+                modalImage.alt = img.alt;
+                document.body.style.overflow = 'hidden';
+                clearInterval(autoPlayInterval);
+            });
+        });
+
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            resetAutoPlay();
+        }
+
+        document.querySelector('.modal-close').addEventListener('click', closeModal);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                closeModal();
+            }
+        });
+
         // Testimonial Slider Logic
         let testimonialIndex = 0;
         const testimonialSlides = document.getElementsByClassName('testimonial-slide');
@@ -619,22 +852,33 @@
             testimonialAutoPlayInterval = setInterval(autoPlayTestimonial, 6000);
         }
 
+        // FAQ Accordion Logic
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const toggle = element.querySelector('.faq-toggle');
+            const isActive = answer.classList.toggle('active');
+            element.setAttribute('aria-expanded', isActive);
+            toggle.classList.toggle('active');
+        }
+
         // Initialize sliders
         showSlide(slideIndex);
         autoPlayInterval = setInterval(autoPlay, 5000);
         showTestimonial(testimonialIndex);
         testimonialAutoPlayInterval = setInterval(autoPlayTestimonial, 6000);
 
-        // Smooth Scroll and Mobile Menu Close
+        // Smooth Scroll for Navigation Links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-                mobileMenu.classList.add('hidden');
-                menuToggle.setAttribute('aria-expanded', 'false');
-                mobileMenu.setAttribute('aria-hidden', 'true');
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
             });
         });
 
@@ -644,6 +888,16 @@
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     button.click();
+                }
+            });
+        });
+
+        // Keyboard Navigation for Mobile Menu and FAQ
+        document.querySelectorAll('#mobile-menu a, .faq-question').forEach(item => {
+            item.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    item.click();
                 }
             });
         });
